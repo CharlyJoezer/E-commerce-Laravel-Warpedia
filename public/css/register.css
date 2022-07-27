@@ -1,0 +1,115 @@
+.main-text-top {
+    text-align: center;
+    padding: 20px;
+}
+.main-text-top img {
+    width: 150px;
+    height: 50px;
+}
+.main-content {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.image-and-text img{
+    width: 430px;
+    height: 380px;
+    margin-left: 50px;
+}
+.box-register {
+    border: 1px solid #eee;
+    box-shadow: 0px 5px 15px 5px #eee;
+    padding: 25px;
+    box-sizing: border-box;
+    min-height: 400px;
+    margin-right: 50px;
+    
+}
+.box-register-content {
+    font-family: Roboto;
+    box-sizing: border-box;
+    width: 300px;
+}
+.box-register-content h1{
+    font-size: 22px;
+    color: #666;
+    text-align: center;
+}
+.box-register-content .for-login {
+    font-size: 14px;
+    font-weight: 400;
+    text-align: center;
+    color: #777;
+    padding-top: 8px;
+}
+.form-register {
+    box-sizing: border-box;
+}
+.form-register input:nth-child(2n){
+    display: block;
+    font-size: 14px;
+    font-family: Roboto, sans-serif;
+    padding-left: 3px;
+    width: 100%;
+    box-sizing: border-box;
+    outline: none;
+    height: 30px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+.form-register input:focus {
+    border: 2px solid green;
+}
+.form-input-username {
+    margin-top: 20px;
+}
+.form-input-email {
+    margin-top: 20px;
+}
+.form-input-password{
+    margin-top: 20px;
+}
+.form-register p {
+    font-size: 13px;
+    font-weight: 400;
+    color: #888;
+    margin-bottom: 3px;
+}
+.form-register button{
+    width: 100%;
+    padding: 12px 5px 12px 5px;
+    border: none;
+    border-radius:5px;
+    box-sizing: border-box;
+    background-color: #02c40f;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 60px;
+    transition: 0.3s;
+}
+.form-register button:hover {
+    background-color: #00a50b;
+    transition: 0.3s;
+}
+.check-input {
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+}
+.check-input input{
+    display: inline;
+    text-align: left;
+    margin: 0px;
+    width: 15px;
+    height: 15px;
+}
+.check-input label {
+    font-size: 13px;
+    color: #aaa;
+    padding-left: 5px;
+}
+.is-invalid {
+    border: 1px solid red;
+}
