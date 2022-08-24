@@ -34,7 +34,7 @@
                             <label for="check-save"> I Trust This Website is Safe!</label><br>
                         </div>
 
-                        <button class="button-daftar">Daftar</button>
+                        <button class="button-daftar" type="submit">Daftar</button>
                     </form>
                 </div>
             </div>

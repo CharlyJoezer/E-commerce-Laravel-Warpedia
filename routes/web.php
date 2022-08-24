@@ -1,8 +1,11 @@
 <?php
 
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\TokoController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Response;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,3 +32,34 @@ Route::get('/login', [UserController::class, 'viewUserLogin']);
 // INSERT DATA LOGIN
 Route::post('/auth/login', [UserController::class, 'userLoginAuth']);
 
+
+// BUAT TOKO
+Route::get('/buatToko', [UserController::class, 'viewBuatToko']);
+Route::post('/buatToko/verify/sendmessage', [TokoController::class, 'dataPembuatanToko']);
+
+//  VERIFIKASI TOKO
+Route::post('/toko/verifikasi/otp', [TokoController::class, 'sendVerification']);
+Route::post('/check/otp', [TokoController::class, 'checkVerifikasiOTP']);
+
+// CHECK NAMA TOKO
+Route::post('/nama-toko/checking', [UserController::class, 'checkNamaToko']);
+Route::get('/toko/dashboard', [TokoController::class, 'dashboardTokoView']);
+Route::get('/toko/dashboard/buat-produk', [TokoController::class, 'dashboardBuatProduk']);
+
+// DASHBOARD TOKO
+Route::post('/store/buat-produk', [TokoController::class, 'storeDataProduk']);
+
+// STORAGE
+Route::get('/storage/{filename}', function($filename){
+    $path = storage_path('app/public/image/' . $filename);
+    if(!File::exists($path)){
+        abort(404);
+    }
+    $file = File::get($path);
+    $type = File::mimeType($path);
+
+    $response = Response::make($file, 200);
+    $response->header("Content-Type", $type);
+
+    return $response;
+});

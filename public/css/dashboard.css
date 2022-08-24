@@ -1,0 +1,234 @@
+body {
+    margin: 0px;
+    padding: 0px;
+    position: relative;
+}
+h1, h2, h3, h4, h5, p {
+    margin: 0px;
+    padding: 0px;
+}
+a {
+    text-decoration: none;
+    color: #555;
+}
+
+.navbar{
+    box-shadow: 0 5px 5px -5px #ccc;
+    padding: 10px 35px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: white;
+    z-index: 6;
+    background-color: white;
+}
+.nav-box1 img{
+    width: 130px;
+    height: 30px;
+}
+.nav-box2{
+    display: flex;
+    align-items: center;
+}
+.nav-box2 img{
+    width: 30px;
+    height: 30px;
+}
+.nav-box2 p{
+    margin-left: 5px;
+    font-size: 15px;
+    font-weight: 400;
+    color: #555;
+    font-family: Roboto;
+}
+.sidebar {
+    box-shadow: 5px 0 5px -5px  #ccc;
+    /* border-right: 1px solid #aaa; */
+    position: fixed;
+    left: 0;
+    z-index: 5;
+    height: 100%;
+    width: 200px;
+    padding: 8px 8px;
+    background-color: white;
+}
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    margin: 5px 0px;
+}
+.sidebar-header p {
+    font-family: Roboto;
+    font-size: 13px;
+    font-weight: 300;
+    margin-left: 5px;
+    color: #555;
+}
+.box-kategori{
+    margin-bottom: 20px;
+}
+.all-kategori-header {
+    display: flex;
+    align-items: center;
+}
+.all-kategori-header p{
+    padding-left: 5px;
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: 400;
+    color: #555;
+}
+
+.all-kategori-item{
+    font-size: 12px;
+    color: #555;
+    font-family: Roboto;
+}
+.all-kategori-item p {
+    padding: 5px;
+    padding-left: 26px;
+    font-weight: 300;
+    cursor: pointer;
+}
+.all-kategori-item p:hover {
+    background-color: #ccc;
+}
+.dashboard-content {
+    position: relative;
+    padding: 14px 30px;
+    box-sizing: border-box;
+    overflow: auto;
+}
+.buat-product-header h2{
+    font-family: Roboto;
+    color: #333;
+    font-size: 20px;
+    font-weight: 500;
+}
+.form-buat-produk label, .gambar-produk-text{
+    font-family: Roboto;
+    color: #222;
+    font-size: 13px;
+    font-weight: 400;
+}
+.kategori-produk {
+    margin-top: 3px;
+    margin-bottom: 30px;
+    padding: 5px;
+    box-sizing: border-box;
+    width: 80%;
+    height: 40px;
+    font-size: 15px;
+}
+.kategori-produk:focus {
+    outline: none;
+}
+.kategori-produk option {
+    font-size: 15px;
+}
+
+.informasi-produk-text {
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 500;
+    padding-bottom: 15px;
+}
+
+.box-input-name-produk input{
+    padding: 5px 0px;
+    box-sizing: border-box;
+    width: 60%;
+    font-size: 15px;
+    border: none;
+    border-bottom: 1px solid #555;
+    font-family: Roboto;
+}
+.box-input-name-produk input:focus {
+    outline: none;
+    border-bottom: 2px solid green;
+}
+.choose-area {
+    margin-top: 3px;
+    border: 2px dotted #555;
+    width: fit-content;
+    height: fit-content;
+    background-image: url('/asset/bg-add-produk.png');
+    background-position: center;
+    background-size: cover;
+}
+.btn-gambar-produk{
+    height: 150px;
+    width: 150px;
+    opacity: 0;
+}
+.flex-choose-area{
+    display: flex;
+}
+.box-input-deskripsi-produk{
+    margin-bottom: 20px;
+}
+.deskripsi-produk-form{
+    border: none;
+    border-bottom: 1px solid #555;
+    width: 60%;
+    height: 100px;
+    overflow-y: auto;
+    font-size: 14px;
+    font-family: roboto;
+}
+.deskripsi-produk-form:focus{
+    outline: none;
+    border-bottom: 2px solid green;
+}
+.box-input-harga-produk {
+    width: 60%;
+    border-bottom: 1px solid #555;
+}
+.wrap-input-box-harga{
+    display: flex;
+    align-items: center;
+    padding: 5px 0px;
+}
+.harga-produk-form{
+    padding-left: 5px;
+    box-sizing: border-box;
+    width: 100%;
+    font-size: 15px;
+    border: none;
+    font-family: Roboto;
+}
+.harga-produk-form:focus{
+    outline: none;
+    /* border-bottom: 2px solid green; */
+}
+.stok-produk-form, .minimal-produk-form {
+    padding: 5px 0;
+    font-size: 15px;
+    border: none;
+    border-bottom: 1px solid #555;
+    width: 60%;
+}
+.stok-produk-form:focus, .minimal-produk-form:focus{
+    outline: none;
+    border-bottom: 2px solid green;
+}
+.btn-confirm-buat-produk{
+    width: 60%;
+    padding: 10px 0;
+    border: 1px solid rgb(0, 198, 0);
+    background-color: rgb(0, 198, 0);
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 0 3px #aaa;
+    margin-bottom: 100px;
+}
+.btn-confirm-buat-produk:hover{
+    outline: none;
+    background-color: rgb(0, 163, 0);
+    border-bottom: 1px solid rgb(0, 163, 0);
+}

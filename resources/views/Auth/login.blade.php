@@ -31,7 +31,7 @@
                         </div>
 
                         <div class="button-canvas" style="margin-bottom: 5px;">
-                            <button>Masuk</button>
+                            <button type="submit">Masuk</button>
                         </div>
                     </form>
                 </div>
