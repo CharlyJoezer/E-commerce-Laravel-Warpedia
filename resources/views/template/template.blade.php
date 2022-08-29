@@ -12,7 +12,7 @@
     src="https://code.jquery.com/jquery-3.6.0.js"
     integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
     crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="css/{{ $css }}">
+    <link rel="stylesheet" href="/css/{{ $css }}">
     <title>{{ $title }}</title>
     <style>
         body {
@@ -222,6 +222,85 @@
             padding-left: 15px;
             padding-top: 8px;
         }
+        .footer{
+    height: auto;
+    margin-top: 500px;
+}
+.footer-top{
+    height: 50px;
+    background-color: rgb(0, 127, 0);
+    /* background-color: #555; */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 25px;
+}
+.footer-top p {
+    font-family: sans-serif;
+    font-size: 13px;
+    color: white;
+}
+.social-media-link {
+    display: flex;
+    align-items: center;
+}
+.social-media-link img{
+    width: 15px;
+    height: 15px;
+    margin-left: 30px;
+}
+.footer-middle {
+    height: 200px;
+    display: flex;
+    padding:  30px 25px 0px 25px;
+}
+.footer-middle-name{
+    width: 250px;
+    margin-right: 40px;
+}
+.footer-header-bottom-line{
+    height: 5px;
+    width: 100%;
+    border-radius: 20px;
+    background-color: rgb(0, 158, 0);
+    margin-top: 10px;
+}
+.footer-middle-name header{
+    font-family: Roboto;
+    font-weight: 500;
+    margin-bottom: 20px;
+    /* border-bottom: 2px solid #555; */
+}
+.footer-middle-name p{
+    font-family: sans-serif;
+    font-size: 13px;
+    white-space: 2px;
+}
+.image-and-text{
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+.image-and-text img{
+    width: 13px;
+    height: 13px;
+    margin-right: 5px;
+}
+.footer-middle-section2 p , .footer-middle-section3 p{
+    margin-bottom: 15px;
+}
+
+.footer-bottom {
+    height: 40px;
+    border-top: 1px solid #555;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: sans-serif;
+    font-size: 12px;
+    color: #555;
+    /* background-color: #174216; */
+}
     </style>
 </head>
 <body>
@@ -259,7 +338,7 @@
              'right': '',
              'z-index': '',
              'background-color': 'none',
-            'box-shadow': '0 3px 5px #eee'
+             'box-shadow': '0 3px 5px #eee'
             })  
         }
     })

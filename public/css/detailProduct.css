@@ -1,0 +1,169 @@
+.wrapper-content {
+    padding: 5px 40px;
+    background-color: rgb(243, 243, 243);
+    height: auto;
+    padding-bottom: 20px;
+}
+.breadcumb{
+    margin-bottom: 20px;
+}
+.breadcumb-text {
+    font-family: sans-serif;
+    font-size: 14px;
+}
+.wrapper-box-product {
+    display: flex;
+}
+.wrapper-box-product{
+    width: 100%;
+    min-height: 400px;
+    margin-right: 20px;
+    padding-top: 20px;
+}
+.main-image-product{
+    margin-right: 20px;
+    width: 400px;
+    height: 400px;
+}
+.list-item-product .item-product-name{
+    font-family: sans-serif;
+    font-size: 19px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+.rating-penilaian-terjual {
+    display: flex;
+    margin-bottom: 15px;
+}
+.rating-penilaian-terjual p {
+    padding-right: 25px;
+    margin-right: 25px;
+    border-right: 1px solid #aaa;
+    font-family: sans-serif;
+    font-size: 14px;
+}
+.rating-penilaian-terjual p:nth-child(3){
+    border: none;
+}
+.product-price {
+    margin-bottom: 15px;
+}
+.product-price h2 {
+    font-family: Roboto;
+    font-size: 25px;
+    color: green;
+}
+.kuantitas-produk {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+}
+.stok-produk {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.value-stok-produk {
+    font-family: Roboto;
+    color: #555;
+    font-size: 14px;
+    font-weight: 400;
+    padding-left: 8px;
+}
+.jumlah-order-text, .stok-produk-text{
+    font-family: Roboto;
+    color: #aaa;
+    font-size: 13px;
+    font-weight: 400;
+    margin-right: 20px;
+}
+.wrapper-counter-number {
+    height: 30px;
+    width: 100px;
+    display: flex;
+}
+.mines-counter, .plus-counter{
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #aaa;
+    font-weight: 600;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.number-counter {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    border-bottom: 1px solid #aaa;
+    border-right: none;
+    border-left: none;
+    font-family: sans-serif;
+    font-size: 13px;
+    color: #555;
+    padding: 10px 18px;
+    border-top: 1px solid #aaa;
+    width: 20px;
+}
+.btn-keranjang-beli-sekarang {
+    display: flex;
+    margin-bottom: 20px;
+}
+.btn-masukkan-keranjang, .btn-beli-sekarang{
+    padding: 10px 15px;
+    box-sizing: border-box;
+    font-family: sans-serif;
+    font-size: 14px;
+}
+.btn-masukkan-keranjang {
+    border: 1px solid green;
+    color: green;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    background-color: rgba(0, 83, 0, 0.137);
+}
+.btn-masukkan-keranjang img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+.btn-beli-sekarang {
+    background-color: #008000;
+    border: 1px solid green;
+    color: white;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.wrapper-deskripsi-produk {
+    height: fit-content;
+}
+.deskripsi-produk-header{
+    font-family: sans-serif;
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 10px;
+}
+.deskripsi-produk {
+    font-family: sans-serif;
+    font-size: 14px;
+    color: #555;
+    width: 60%;
+}
+.read-more-deskripsi, .baca-sedikit-deskripsi{
+    cursor: pointer;
+    font-family: sans-serif;
+    font-style: italic;
+    font-weight: 200;
+    color: #aaa;
+    font-size: 12px;
+    display: none;
+}

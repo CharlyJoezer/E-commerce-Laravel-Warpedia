@@ -103,14 +103,14 @@
 <div class="content" id="content">
     <div class="trend-product">
         @foreach ($data as $item)
-            <div class="product-item">
+            <a href="/product/{{ $item->id * 3625 }}/{{ $item->nama_produk }}" class="product-item">
                 <img src="storage/{{ $item->gambar_produk }}" alt="">
                 <div class="desc-product">
                     <p class="product-name">{{ $item->nama_produk }}</p>
                     <p class="product-price">Rp <span class="harga-number">{{ $item->harga_produk }}</span></p>
                     <p class="product-alamat">Jakarta</p>
                 </div>
-            </div>
+            </a>
         @endforeach
     </div>
     
@@ -124,22 +124,24 @@
 
 <script>
     function loadData(page){
-        $.ajax({
-            'url':'?page='+page,
-            'type': 'GET',
-            'dataType': 'JSON',
-            success:function(data){
-                if(data.html == ''){
-                    statusProduct = null;
-                    return;
+        if(statusProduct !== null){
+            $.ajax({
+                'url':'?page='+page,
+                'type': 'GET',
+                'dataType': 'JSON',
+                success:function(data){
+                    if(data.html == ''){
+                        statusProduct = null;
+                        return;
+                    }
+                    $('#wrapper-box-list-product').append(`
+                        <div class="trend-product" id="page${page}-product">
+                            ${data.html}
+                        </div>
+                    `)
                 }
-                $('#wrapper-box-list-product').append(`
-                    <div class="trend-product" id="page${page}-product">
-                        ${data.html}
-                    </div>
-                `)
-            }
-        })
+            })
+        }
     }
     var statusProduct = '';
     var scroll = this.scrollY;

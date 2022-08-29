@@ -54,6 +54,9 @@
     margin-bottom: 10px;
     /* justify-content: space-between; */
 }
+.trend-product a {
+    text-decoration: none;
+}
 .product-item {
     width: 180px;
     box-shadow: 0 0 5px#aaa;
@@ -83,11 +86,13 @@
     overflow: hidden;
     white-space: nowrap;
     line-height: 1;
+    color: black;
 }
 .desc-product .product-price {
     font-size: 14px;
     font-weight: 500;
     padding-top: 3px;
+    color: black;
 }
 .desc-product .product-alamat {
     font-weight: 300;
@@ -135,23 +140,4 @@
     font-family: Roboto,sans-serif;
     font-size: 12px;
     text-align: center;
-}
-.footer{
-    height: auto;
-}
-.footer-top{
-    height: 50px;
-    background-color: green;
-    display: flex;
-    align-items: center;
-    font-family: sans-serif;
-}
-.footer-top p {
-    color: white;
-}
-.footer-middle {
-    height: 200px;
-}
-.footer-bottom {
-    height: 50px;
 }

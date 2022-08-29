@@ -1,6 +1,6 @@
 <div class="navbar" id="navbar">
     <div class="nav-box1">
-        <img src="/asset/warpedia_text.png" alt="">
+        <img src="/asset/warpedia_dash.png" alt="">
     </div>
 
     <div class="nav-box2">

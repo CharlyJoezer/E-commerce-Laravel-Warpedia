@@ -21,6 +21,9 @@ use Illuminate\Support\Facades\Response;
 // HOME VIEW ROUTE
 Route::get('/', [HomeController::class, 'homeView']);
 
+// DETAIL PRODUCT
+Route::get('/product/{id}/{slug}', [HomeController::class, 'viewDetailProduct']);
+
 // REGISTER VIEW
 Route::get('/register', [UserController::class, 'viewUserRegister']);
 

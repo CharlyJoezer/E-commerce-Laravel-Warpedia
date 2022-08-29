@@ -1,17 +1,17 @@
 <div class="navbar" id="navbar">
-    <img class="logo-img" id="logo-img" src="asset/warped.png" alt="">
+    <img class="logo-img" id="logo-img" src="/asset/warped.png" alt="">
     <p class="navbar-kategori">Kategori</p>
     <div class="navbar-search-box">
         <input class="navbar-search" id="navbar-search-box" placeholder="Cari barang ...">
         <div class="navbar-search-button" id="navbar-search-button">
-            <img src="asset/search.svg" alt="">
+            <img src="/asset/search.svg" alt="">
         </div>
     </div>
     <img class="cart-shop" id="cart-shop" src="https://img.icons8.com/cute-clipart/64/000000/shopping-cart-loaded.png" alt="">
     @auth   
     <div class="wrapper-buat-toko">
         <div class="buat-toko">
-            <img src="asset/buat_toko.png" alt="">
+            <img src="/asset/buat_toko.png" alt="">
             <p class="buat-toko-text">Toko</p>
         </div>
         <div class="dropdown-buat-toko">
@@ -20,7 +20,7 @@
         </div>
     </div>
     <div class="navbar-profil">
-        <img src="asset/profile.png" alt="">
+        <img src="/asset/profile.png" alt="">
         <p class="navbar-profil-name">{{ auth()->user()->username }}</p>
     </div>
     @else

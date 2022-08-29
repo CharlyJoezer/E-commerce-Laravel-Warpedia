@@ -21,4 +21,15 @@ class HomeController extends Controller
             'data' => $product
         ]);
     }
+
+    public function viewDetailProduct($id){
+        $trueID = $id / 3625;
+        $getData = Product::where('id', $trueID)->first();
+        return view('detailProduct', [
+            'title' => 'Warpedia | Detail Product',
+            'css' => 'detailProduct.css',
+            'js' => 'detailProduct.js',
+            'data' => $getData
+        ]);
+    }
 }
