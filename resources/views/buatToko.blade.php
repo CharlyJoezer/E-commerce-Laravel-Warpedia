@@ -100,7 +100,7 @@
                     })
                     $('#step3-form-button').prop('disabled', false)
 
-                }else {
+                }else{
                     $('#nama_toko_desc').html(data.fail);
                     $('#nama_toko_desc').css('color','red');
                     $('#step3-form-button').prop('disabled', true)

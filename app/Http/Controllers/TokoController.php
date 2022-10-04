@@ -125,7 +125,7 @@ class TokoController extends Controller
     }
 
     public function storeDataProduk(Request $request){
-        // try{
+        try{
             $validatedData = $request->validate([
                 'nama_produk' => 'required|max:50',
                 'kategori'    => 'required|numeric',
@@ -157,8 +157,8 @@ class TokoController extends Controller
             }else{
                 return back()->with('gambar-produk', 'Mohon format gambar bertipe PNG atau JPG!');
             }
-        // }catch(Exception $e){
-        //     return back()->with('message', 'Server Not Responding');
-        // }
+        }catch(Exception $e){
+            return back()->with('message', 'Server Not Responding');
+        }
     }
 }

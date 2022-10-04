@@ -123,6 +123,10 @@
 </div>
 
 <script>
+    myArray = ['aaa', 'bbb', 'ccc'];
+    var arrStr = encodeURIComponent(JSON.stringify(myArray))
+    console.log(arrStr);
+
     function loadData(page){
         if(statusProduct !== null){
             $.ajax({
@@ -178,6 +182,10 @@
             'box-shadow' : 'none'
         })
     })
+
+    
+
+    
 
 </script>
 @endsection

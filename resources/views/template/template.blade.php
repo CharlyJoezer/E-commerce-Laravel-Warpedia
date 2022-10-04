@@ -103,6 +103,7 @@
             padding: 5px;
             cursor: pointer; 
             position: relative;
+            border-radius: 10px;
         }
         .buat-toko img {
             width: 15px;
@@ -162,12 +163,62 @@
         .dropdown-buat-toko:hover .wrapper-buat-toko {
             background-color: #ddd;
         }
+        .wrapper-navbar-profil{
+            position: relative;
+        }
+        .dropdown-navbar-profil{
+            display: none;
+            position: absolute;
+            box-shadow: 0 0 5px #ccc;
+            border-radius: 5px;
+            background-color: white;
+            padding: 10px;
+            z-index: 1;
+            right: 0;
+        }
+        .wrapper-navbar-profil:hover .dropdown-navbar-profil{
+            display: block;
+        }
         .navbar-profil {
             display: flex;
             align-items: center;
             padding: 5px; 
             cursor: pointer;
             transition: 0.3s;
+            border-radius: 10px
+        }
+        .dropdown-profil-data {
+            display: flex;
+            align-items: center;
+            width: 200px;
+            border: 1px solid #eee;
+            border-radius: 5px;
+            padding: 8px;
+            transition: 0.2s;
+            text-decoration: none;
+            color: #555;
+        }
+        .dropdown-profil-data:hover {
+            border: 1px solid #ddd;
+            background-color: rgba(237, 237, 237, 0.381);
+            cursor: pointer;
+        }
+        .dropdown-profil-logout{
+            text-decoration:none;
+            font-family:Roboto;
+            font-size:14px;
+            text-align: end;
+            margin-top: 15px;
+        }
+        .dropdown-profil-logout a{
+            text-align: end;
+            margin-top: 5px;
+            border-radius: 5px;
+            color: #777;
+            text-decoration: none;
+        }
+        .dropdown-profil-username::first-letter, .navbar-profil-name::first-letter{
+            text-transform: capitalize;
         }
         .navbar-profil:hover{
             background-color: #ddd;
@@ -223,84 +274,84 @@
             padding-top: 8px;
         }
         .footer{
-    height: auto;
-    margin-top: 500px;
-}
-.footer-top{
-    height: 50px;
-    background-color: rgb(0, 127, 0);
-    /* background-color: #555; */
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 25px;
-}
-.footer-top p {
-    font-family: sans-serif;
-    font-size: 13px;
-    color: white;
-}
-.social-media-link {
-    display: flex;
-    align-items: center;
-}
-.social-media-link img{
-    width: 15px;
-    height: 15px;
-    margin-left: 30px;
-}
-.footer-middle {
-    height: 200px;
-    display: flex;
-    padding:  30px 25px 0px 25px;
-}
-.footer-middle-name{
-    width: 250px;
-    margin-right: 40px;
-}
-.footer-header-bottom-line{
-    height: 5px;
-    width: 100%;
-    border-radius: 20px;
-    background-color: rgb(0, 158, 0);
-    margin-top: 10px;
-}
-.footer-middle-name header{
-    font-family: Roboto;
-    font-weight: 500;
-    margin-bottom: 20px;
-    /* border-bottom: 2px solid #555; */
-}
-.footer-middle-name p{
-    font-family: sans-serif;
-    font-size: 13px;
-    white-space: 2px;
-}
-.image-and-text{
-    display: flex;
-    align-items: center;
-    margin-bottom: 15px;
-}
-.image-and-text img{
-    width: 13px;
-    height: 13px;
-    margin-right: 5px;
-}
-.footer-middle-section2 p , .footer-middle-section3 p{
-    margin-bottom: 15px;
-}
+            height: auto;
+            margin-top: 500px;
+    }
+    .footer-top{
+        height: 50px;
+        background-color: rgb(0, 127, 0);
+        /* background-color: #555; */
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 25px;
+    }
+    .footer-top p {
+        font-family: sans-serif;
+        font-size: 13px;
+        color: white;
+    }
+    .social-media-link {
+        display: flex;
+        align-items: center;
+    }
+    .social-media-link img{
+        width: 15px;
+        height: 15px;
+        margin-left: 30px;
+    }
+    .footer-middle {
+        height: 200px;
+        display: flex;
+        padding:  30px 25px 0px 25px;
+    }
+    .footer-middle-name{
+        width: 250px;
+        margin-right: 40px;
+    }
+    .footer-header-bottom-line{
+        height: 5px;
+        width: 100%;
+        border-radius: 20px;
+        background-color: rgb(0, 158, 0);
+        margin-top: 10px;
+    }
+    .footer-middle-name header{
+        font-family: Roboto;
+        font-weight: 500;
+        margin-bottom: 20px;
+        /* border-bottom: 2px solid #555; */
+    }
+    .footer-middle-name p{
+        font-family: sans-serif;
+        font-size: 13px;
+        white-space: 2px;
+    }
+    .image-and-text{
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+    .image-and-text img{
+        width: 13px;
+        height: 13px;
+        margin-right: 5px;
+    }
+    .footer-middle-section2 p , .footer-middle-section3 p{
+        margin-bottom: 15px;
+    }
 
-.footer-bottom {
-    height: 40px;
-    border-top: 1px solid #555;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: sans-serif;
-    font-size: 12px;
-    color: #555;
-    /* background-color: #174216; */
-}
+    .footer-bottom {
+        height: 40px;
+        border-top: 1px solid #555;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: sans-serif;
+        font-size: 12px;
+        color: #555;
+        /* background-color: #174216; */
+    }
     </style>
 </head>
 <body>

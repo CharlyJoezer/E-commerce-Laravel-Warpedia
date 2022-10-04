@@ -1,11 +1,13 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TokoController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Response;
+use App\Http\Controllers\KeranjangController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +36,7 @@ Route::post('/auth/register', [UserController::class, 'userRegisterAuth']);
 Route::get('/login', [UserController::class, 'viewUserLogin']);
 // INSERT DATA LOGIN
 Route::post('/auth/login', [UserController::class, 'userLoginAuth']);
+Route::get('/logout', [UserController::class, 'userLogout']);
 
 
 // BUAT TOKO
@@ -53,9 +56,9 @@ Route::get('/toko/dashboard/buat-produk', [TokoController::class, 'dashboardBuat
 Route::post('/store/buat-produk', [TokoController::class, 'storeDataProduk']);
 
 // STORAGE
-Route::get('/storage/{filename}', function($filename){
+Route::get('/storage/{filename}', function ($filename) {
     $path = storage_path('app/public/image/' . $filename);
-    if(!File::exists($path)){
+    if (!File::exists($path)) {
         abort(404);
     }
     $file = File::get($path);
@@ -66,3 +69,15 @@ Route::get('/storage/{filename}', function($filename){
 
     return $response;
 });
+
+// HALAMAN KERANJANG
+Route::get('/keranjang', [KeranjangController::class, 'index']);
+// MASUKAN KERANJANG
+Route::post('/insert/keranjang', [KeranjangController::class, 'insertKeranjang']);
+// MENGUBAH JUMLAH PESANAN KERANJANG/PRODUK
+Route::post('/change/count', [KeranjangController::class, 'ubahJumlahPesanan']);
+// MENGHAPUS PRODUK KERANJANG
+Route::post('/produk-keranjang/delete-item/{id}', [KeranjangController::class, 'deleteItemKeranjang']);
+
+// CHECKOUT KERANJANG 
+Route::post('/keranjang/checkout', [KeranjangController::class, 'prosesCheckoutKeranjang']);

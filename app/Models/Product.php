@@ -11,4 +11,8 @@ class Product extends Model
 
     protected $table = 'product';
     protected $guarded = ['id'];
+
+    public function toko(){
+        return $this->belongsTo(Toko::class);
+    }
 }
