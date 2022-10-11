@@ -8,9 +8,10 @@ use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
-    public function homeView(Request $request){
+    public function homeView(Request $request)
+    {
         $product = Product::paginate(7);
-        if($request->ajax()){
+        if ($request->ajax()) {
             $view = view('data', compact('product'))->render();
             return response()->json(['html' => $view]);
         }
@@ -22,7 +23,8 @@ class HomeController extends Controller
         ]);
     }
 
-    public function viewDetailProduct($id){
+    public function viewDetailProduct($id)
+    {
         $trueID = $id / 3625;
         $getData = Product::where('id', $trueID)->first();
         return view('detailProduct', [

@@ -134,7 +134,7 @@
         <script>
             function sendCode(){
                 $.ajax({
-                    'url': window.location.origin + '/toko/verifikasi/otp',
+                    'url': window.location.origin + '/verifikasi/otp',
                     'type': 'POST',
                     'dataType': 'JSON',
                     'data' : {
@@ -165,7 +165,7 @@
             }
             $('#kirim-kode-otp').click(function(){
                 $.ajax({
-                    'url': window.location.origin + '/toko/verifikasi/otp',
+                    'url': window.location.origin + '/verifikasi/otp',
                     'type': 'POST',
                     'dataType': 'JSON',
                     'data' : {

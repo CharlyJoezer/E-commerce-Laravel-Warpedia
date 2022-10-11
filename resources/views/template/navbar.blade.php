@@ -1,5 +1,7 @@
 <div class="navbar" id="navbar">
-    <img class="logo-img" id="logo-img" src="/asset/warped.png" alt="">
+    <a href="/">
+        <img class="logo-img" id="logo-img" src="/asset/warped.png" alt="">
+    </a>
     <p class="navbar-kategori">Kategori</p>
     <div class="navbar-search-box">
         <input class="navbar-search" id="navbar-search-box" placeholder="Cari barang ...">
@@ -14,7 +16,10 @@
         window.location.href = baseurl+'/keranjang'
     }
     </script>
-    @auth   
+    @auth
+    <div class="wrapper-pesan">
+        <img src="/asset/message.png" width="20" height="25" alt="">
+    </div>
     <div class="wrapper-buat-toko">
         <div class="buat-toko">
             <img src="/asset/buat_toko.png" alt="">
@@ -27,12 +32,23 @@
     </div>
     <div class="wrapper-navbar-profil">
         <div class="navbar-profil">
+            @if (auth()->user()->foto_profil != null)
+            <img src="/storage/{{ auth()->user()->foto_profil }}" alt="">
+            <p class="navbar-profil-name">{{ auth()->user()->username }}</p>
+            @else
             <img src="/asset/profile.png" alt="">
             <p class="navbar-profil-name">{{ auth()->user()->username }}</p>
+            @endif
         </div>
-    <div class="dropdown-navbar-profil">
-            <a class="dropdown-profil-data" href="test">
-                <div><img src="/asset/profile.png" width="50" height="50" alt=""></div>
+        <div class="dropdown-navbar-profil">
+            <a class="dropdown-profil-data" href="/user/profil">
+                <div>
+                    @if (auth()->user()->foto_profil != null)
+                    <img class="navbar-dropdown-image-profil" src="/storage/{{ auth()->user()->foto_profil }}" width="50" height="50" alt="Picture Profil">
+                    @else
+                    <img class="navbar-dropdown-image-profil" src="/asset/profile.png" width="50" height="50" alt="">
+                    @endif
+                </div>
                 <div class="dropdown-profil-username" style="font-family: Roboto;padding-left: 10px;">{{ auth()->user()->username }}<div style="font-size: 10px;">Role : Member</div></div>
             </a>
             <div class="dropdown-profil-logout">

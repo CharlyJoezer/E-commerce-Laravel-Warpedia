@@ -44,7 +44,7 @@ Route::get('/buatToko', [UserController::class, 'viewBuatToko']);
 Route::post('/buatToko/verify/sendmessage', [TokoController::class, 'dataPembuatanToko']);
 
 //  VERIFIKASI TOKO
-Route::post('/toko/verifikasi/otp', [TokoController::class, 'sendVerification']);
+Route::post('/verifikasi/otp', [TokoController::class, 'sendVerification']);
 Route::post('/check/otp', [TokoController::class, 'checkVerifikasiOTP']);
 
 // CHECK NAMA TOKO
@@ -59,7 +59,7 @@ Route::post('/store/buat-produk', [TokoController::class, 'storeDataProduk']);
 Route::get('/storage/{filename}', function ($filename) {
     $path = storage_path('app/public/image/' . $filename);
     if (!File::exists($path)) {
-        abort(404);
+        return null;
     }
     $file = File::get($path);
     $type = File::mimeType($path);
@@ -81,3 +81,18 @@ Route::post('/produk-keranjang/delete-item/{id}', [KeranjangController::class, '
 
 // CHECKOUT KERANJANG 
 Route::post('/keranjang/checkout', [KeranjangController::class, 'prosesCheckoutKeranjang']);
+
+// PROFIL USER
+Route::get('/user/profil', [UserController::class, 'viewProfilUser']);
+// UBAH DATA USER
+Route::post('/user/profil/change/{option}', [UserController::class, 'changeDataUser'])->middleware('auth');
+Route::post('/verify/telpon/check-otp', [UserController::class, 'checkEmailVerifikasi']);
+
+// CHANGE FOTO PROFIL
+Route::post('/user/profil/foto-profil/change', [UserController::class, 'changeFotoProfil']);
+
+// GET ALAMAT USER 
+Route::get('/user/profil/getAlamat', [UserController::class, 'getAlamatUserLogin']);
+
+// UPDATE AND CREATE ALAMAT
+Route::post('/user/profil/alamat/{option}', [UserController::class, 'updateOrCreateAlamat']);

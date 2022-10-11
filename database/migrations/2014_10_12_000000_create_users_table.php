@@ -18,8 +18,14 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('username');
             $table->string('password');
-            $table->string('address');
+            $table->enum('gender', ['Laki-Laki', 'Perempuan'])->nullable();
+            $table->text('tanggal_lahir')->nullable();
             $table->string('telepon');
+            $table->string('foto_profil')->nullable();
+            $table->boolean('telepon_limit')->default(true);
+            $table->boolean('username_limit')->default(true);
+            $table->boolean('tanggal_lahir_limit')->default(true);
+            $table->boolean('telepon_limit')->default(true);
             $table->rememberToken();
             $table->timestamps();
         });
