@@ -51,24 +51,23 @@
 }
 .trend-product {
     display: flex;
-    margin-bottom: 10px;
-    /* justify-content: space-between; */
+    margin-bottom: 5px;
 }
 .trend-product a {
     text-decoration: none;
 }
 .product-item {
-    width: 180px;
-    box-shadow: 0 0 5px#aaa;
+    min-width: 166px;
+    max-width: 166px;
+    box-shadow: 0 0 3px#ddd;
     border-radius: 5px;
     margin-left: 5px;
     margin-right: 5px;
     overflow: hidden;
-    height: 260px;
     background-color: white;
     cursor: pointer;
 }
-.product-item img{
+.product-item .product-image{
     width: 100%;
     height: 180px;
 }
@@ -100,13 +99,6 @@
     color: GREEN;
     padding-top: 10px;
 }
-.kategori-text {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
 .bottom-line-header{
     height: 3px;
     width: 100px;
@@ -114,30 +106,19 @@
     border-radius: 15px;
     margin-bottom: 25px;
 }
-.all-kategori {
-    min-height: 200px;
-    /* border: 1px solid #555; */
-    border-radius: 5px;
-    margin-bottom: 10px; 
-    padding: 5px;
-    box-sizing: border-box;
-    
-}
 .list-category-wrapper1, .list-category-wrapper2{
     display: flex;
     justify-content: space-around;
     margin-bottom: 60px;
 }
-.item-category {
-    cursor: pointer;
+.product-toko{
+    display: flex;
+    align-items: center;
+    font-family: sans-serif;
+    font-size: 10px;
+    color: #111;
+    padding-top: 3px;
 }
-.item-category img {
-    width: 50px;
-    height: 50px;
-    border-radius: 5px;
-}
-.item-category p {
-    font-family: Roboto,sans-serif;
-    font-size: 12px;
-    text-align: center;
+.product-toko-name{
+    padding-left: 5px;
 }
