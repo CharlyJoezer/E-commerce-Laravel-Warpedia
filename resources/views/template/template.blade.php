@@ -28,6 +28,10 @@
     <div class="popup-message">
         <div class="message-text">{{ session('fail') }}</div>
     </div>
+    @else
+    <div class="popup-message" style="background-color: rgb(19, 156, 19);">
+        <div class="message-text">{{ session('success') }}</div>
+    </div>
     @endif
 
 
