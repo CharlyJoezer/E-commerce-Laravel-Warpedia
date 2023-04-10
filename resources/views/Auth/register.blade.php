@@ -18,25 +18,33 @@
                     <form action="/auth/register" method="post" class="form-register">
                         @csrf
                         <div class="form-input-email">
-                            <p>Phone number or Email</p>
-                            <input type="text" name="emailOrNumber" required >
+                            <p>Phone number atau Email</p>
+                            <input type="text" name="emailOrNumber" placeholder="Email atau No.HP" required value="{{ old('emailOrNumber') }}">
+                            @error('emailOrNumber')
+                                <div style="color:red;font-size:12px;margin-top:3px;">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="form-input-username">
                             <p>Username</p>
-                            <input type="text" name="username" required>
+                            <input type="text" name="username" placeholder="Username" required value="{{ old('username') }}">
+                            @error('username')
+                                <div style="color:red;font-size:12px;margin-top:3px;">{{ $message }}</div>
+                            @else
+                                <div style="font-size:12px;color:#aaa;margin-top:3px;">*username hanya boleh mengandung huruf</div>
+                            @enderror
+
                         </div>
                         <div class="form-input-password">
                             <p>Password</p>
-                            <input type="password" name="password" required >
-                        </div>
-                        <div class="check-input">
-                            <input type="checkbox" id="check-save" required>
-                            <label for="check-save"> I Trust This Website is Safe!</label><br>
+                            <input type="password" name="password" placeholder="Password" required>
+                            @error('password')
+                                <div style="color:red;font-size:12px;margin-top:3px;">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         <button class="button-daftar" type="submit">Daftar</button>
                     </form>
                 </div>
             </div>
-        </div>  
+        </div>
 @endsection

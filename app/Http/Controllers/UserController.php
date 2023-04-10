@@ -4,14 +4,17 @@ namespace App\Http\Controllers;
 
 use Exception;
 use App\Models\Otp;
+use App\Models\City;
 use App\Models\Toko;
 use App\Models\User;
 use App\Models\Alamat;
+use App\Models\Pesanan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\API\ApidaerahController;
 
 class UserController extends Controller
 {
@@ -44,9 +47,8 @@ class UserController extends Controller
     // AUTH REGISTER
     public function userRegisterAuth(Request $request)
     {
-        try {
-            if (is_int($request->emailOrNumber)) {
-                $finaldata = $request->validate([
+        if (is_int($request->emailOrNumber)) {
+            $finaldata = $request->validate([
                     'username' => 'required|max:250|regex:/^[a-zA-Z]+$/u',
                     'emailOrNumber' => 'required|numeric|max:250',
                     'password' => 'required|min:8|max:100'
@@ -58,23 +60,25 @@ class UserController extends Controller
                     'password' => 'required|min:8|max:100'
                 ]);
             }
+        try {
             $finaldata['password'] = Hash::make($finaldata['password']);
-
+            
             $fordatabase = [
                 'email' => $request->emailOrNumber,
                 'username' => $request->username,
                 'password' => $finaldata['password'],
-                'address' => 'null',
-                'telepon' => 'null'
+                'address' => null,
+                'telepon' => null
             ];
             if (is_numeric($request->emailOrNumber)) {
                 $fordatabase['telepon'] = $request->emailOrNumber;
-                $fordatabase['email'] = ' ';
+                $fordatabase['email'] = null;
             }
+            $fordatabase['connection_id'] = rand(0, 99999999) . $fordatabase['email'] . rand(0, 99999999) . $fordatabase['username'] . rand(0, 99999999);
             User::create($fordatabase);
             return redirect('/login');
         } catch (Exception) {
-            return back();
+            return abort(500);
         }
     }
 
@@ -82,7 +86,7 @@ class UserController extends Controller
     {
         if (is_numeric($request->emailOrPhone)) {
             $finaldata = $request->validate([
-                'emailOrPhone' => 'required|numeric',
+                'emailOrPhone' => 'required',
                 'password' => 'required'
             ]);
             $checkData = [
@@ -92,10 +96,12 @@ class UserController extends Controller
             if (Auth::attempt($checkData)) {
                 $request->session()->regenerate();
                 return redirect('/');
+            }else{
+                return back()->with('fail', 'Email atau Password salah!');
             }
         } else {
             $finaldata = $request->validate([
-                'emailOrPhone' => 'required|email',
+                'emailOrPhone' => 'required',
                 'password' => 'required'
             ]);
             $checkData = [
@@ -106,6 +112,8 @@ class UserController extends Controller
             if (Auth::attempt($checkData)) {
                 $request->session()->regenerate();
                 return redirect('/');
+            }else{
+                return back()->with('fail', 'Email atau Password salah!');
             }
         }
 
@@ -115,7 +123,7 @@ class UserController extends Controller
     public function viewBuatToko()
     {
         if (count(Toko::where('user_id', auth()->user()->id)->get()) > 0) {
-            return redirect('/toko/dashboard');
+            return redirect('/toko/dashboard/beranda');
         }
         return view('buatToko', [
             'title' => 'Buat Toko Gratis | Warpedia',
@@ -143,11 +151,18 @@ class UserController extends Controller
 
     public function viewProfilUser()
     {
-        return view('Profil.profil', [
-            'title' => 'Warpedia | Profil',
-            'css' => 'profil.css',
-            'js' => 'profil.js'
-        ]);
+        if (Auth::check()) {
+            $city = City::all();
+            return view('Profil.profil', [
+                'title' => 'Warpedia | Profil',
+                'css' => 'profil.css',
+                'js' => 'profil.js',
+                'kota' => $city,
+                'pesanan' => count(Pesanan::where('user_id', auth()->user()->id)->get())
+            ]);
+        } else {
+            return redirect('/');
+        }
     }
 
     public function changeDataUser($option, Request $request)
@@ -317,7 +332,7 @@ class UserController extends Controller
     public function getAlamatUserLogin()
     {
         if (Auth::check()) {
-            $getAlamatUser = Alamat::where('user_id', auth()->user()->id)->get();
+            $getAlamatUser = Alamat::where('user_id', auth()->user()->id)->orderBy('id', 'desc')->get();
             $returnData = [];
             for ($i = 0; $i < count($getAlamatUser); $i++) {
                 $pushArray = [
@@ -325,7 +340,8 @@ class UserController extends Controller
                     'nama_tempat' => $getAlamatUser[$i]['tempat'],
                     'nama' => $getAlamatUser[$i]['nama'],
                     'nomor' => $getAlamatUser[$i]['telepon'],
-                    'alamat' => $getAlamatUser[$i]['alamat_lengkap']
+                    'alamat' => $getAlamatUser[$i]['alamat_lengkap'],
+                    'city' => $getAlamatUser[$i]['city']
                 ];
                 array_push($returnData, $pushArray);
             }
@@ -340,6 +356,7 @@ class UserController extends Controller
         try {
             if (Auth::check()) {
                 $validationData = Validator::make($request->data, [
+                    'city_id' => 'required|numeric',
                     'tempat' => 'required|string',
                     'nama' => 'required|string|max:50',
                     'telepon' => 'required|string|numeric|digits_between:10,15',
@@ -352,6 +369,7 @@ class UserController extends Controller
                     return response()->json(['status' => 'true', 'message' => 'Pilihan tempat tidak sesuai!'], 200);
                 }
                 $finaldata = [
+                    'city_id' => $request->data['city_id'],
                     'user_id' => auth()->user()->id,
                     'tempat' => $request->data['tempat'],
                     'nama' => $request->data['nama'],
@@ -377,8 +395,119 @@ class UserController extends Controller
                 }
             }
         } catch (Exception $e) {
-            // return $e->getMessage();
             return response()->json(['status' => '500', 'message' => 'Terjadi Kesalahan Server'], 500);
+        }
+    }
+
+    public function getRiwayatPesanan(Request $request, $option)
+    {
+        try {
+            if ($request->ajax()) {
+                if (Auth::check()) {
+                    if ($option == 'perlu-dibayar') {
+                        $pesanan = Pesanan::where([
+                            ['user_id', auth()->user()->id],
+                            ['transaction_status', 'pending']
+                        ])->get();
+                        $view = view('Profil.RiwayatPesanan.belumdibayar', [
+                            'pesanan' => $pesanan,
+                            'status' => 'pending'
+                        ]);
+                        return $view;
+                    }
+
+                    if ($option == 'sedang-dikemas') {
+                        $pesanan = Pesanan::where([
+                            ['user_id', auth()->user()->id],
+                            ['transaction_status', 'settlement']
+                        ])->get();
+                        $view = view('Profil.RiwayatPesanan.sedangdikemas', [
+                            'pesanan' => $pesanan,
+                            'status' => 'settlement'
+                        ]);
+                        return $view;
+                    }
+
+                    if ($option == 'sedang-dikirim') {
+                        $pesanan = Pesanan::where([
+                            ['user_id', auth()->user()->id],
+                            ['transaction_status', 'onroad']
+                        ])->get();
+                        $view = view('Profil.RiwayatPesanan.sedangdikirim', [
+                            'pesanan' => $pesanan,
+                            'status' => 'onroad'
+                        ]);
+                        return $view;
+                    }
+                    if ($option == 'penilaian') {
+                        $pesanan = Pesanan::where([
+                            ['user_id', auth()->user()->id],
+                            ['transaction_status', 'success']
+                        ])->get();
+                        $view = view('Profil.RiwayatPesanan.penilaian', [
+                            'pesanan' => $pesanan,
+                            'status' => 'success'
+                        ]);
+                        return $view;
+                    }
+                } else {
+                    return response()->json(['message' => 'error'], 500);
+                }
+            }
+            return abort(500);
+        } catch (Exception $e) {
+            return response()->json(['message' => 'Server Error'], 500);
+        }
+    }
+
+    public function getDetailPesanan(Request $request, $option, $id_produk)
+    {
+        try {
+            if ($request->ajax() || Auth::check()) {
+                $getPesanan = Pesanan::where([
+                    ['id', $id_produk],
+                    ['user_id', auth()->user()->id]
+                ])->first();
+                $filterData = [
+                    'ekspedisi' => [
+                        'ekspedisi_detail' => $getPesanan['ekspedisi'],
+                        'origin' => $getPesanan['product']['toko']['city']['city_name'],
+                        'destination' => $getPesanan['alamat']['city']['city_name'],
+                        'ongkos_kirim' => $getPesanan['harga_ekspedisi']
+                    ],
+                    'alamat' => [
+                        'tempat' => $getPesanan['alamat']['tempat'],
+                        'nama' => $getPesanan['alamat']['nama'],
+                        'nomor' => $getPesanan['alamat']['telepon'],
+                        'jalan' => $getPesanan['alamat']['alamat_lengkap']
+                    ],
+                    'product' => [
+                        'nama' => $getPesanan['product']['nama_produk'],
+                        'gambar' => $getPesanan['product']['gambar_produk'],
+                        'harga' => $getPesanan['product']['harga_produk'],
+                        'nama_toko' => $getPesanan['product']['toko']['nama_toko'],
+                    ],
+                    'pesanan' => [
+                        'quantity' => $getPesanan['quantity'],
+                        'total_harga_pesanan' => number_format((str_replace('.', '', $getPesanan['product']['harga_produk']) * $getPesanan['quantity']) + $getPesanan['harga_ekspedisi'])
+                    ],
+                    'pembayaran' => [
+                        'metode_pembayaran' => $getPesanan['payment']['payment_type'],
+                        'token_pembayaran' => $getPesanan['payment']['payment_code'],
+                        'status_pembayaran' => $getPesanan['transaction_status']
+                    ]
+                ];
+                $view = view('Profil.RiwayatPesanan.detailpesanan_popup', [
+                    'data' => $filterData,
+                    'id_produk' => $getPesanan['product']['id'],
+                    'option' => $option
+                ])->render();
+                return $view;
+            } else {
+                return response()->json(['message' => 'Server Error'], 500);
+            }
+        } catch (Exception $e) {
+            return response()->json(['message' => 'Server Error'], 500);
         }
     }
 }

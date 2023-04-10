@@ -17,19 +17,16 @@
                     <form action="/auth/login" method="POST">
                         @csrf
                         <div class="form-emailOrPhone">
-                            <p>Email or Phone number</p>
-                            <input type="text" id="Email-phone" name="emailOrPhone">
-                            <p style="font-size: 12px;">example:example@warpedia.com</p>
+                            <p>Email atau Phone number</p>
+                            <input type="text" id="Email-phone" placeholder="Email atau No.Telp" name="emailOrPhone" value="{{ old('emailorPhone') }}">
                         </div>
                         <div class="form-password">
                             <p>Password</p>
-                            <input type="password" id="password" name="password">
+                            <input type="password" id="password" placeholder="Password" name="password">
                         </div>
-                        <div class="form-create-cookies">
-                            <input type="checkbox" id="setCookies" name="setCookies">
-                            <label for="setCookies" style="font-size: 12px;color: #666;">Create cookies to not repeat the login session!</label>
-                        </div>
-
+                        @if (session()->has('fail'))
+                            <div style="color:red;font-size:13px;text-align:center;">{{ session('fail') }}</div>
+                        @endif
                         <div class="button-canvas" style="margin-bottom: 5px;">
                             <button type="submit">Masuk</button>
                         </div>

@@ -54,11 +54,15 @@
     box-sizing: border-box;
     outline: none;
     height: 30px;
-    border: 1px solid #ccc;
+    border: none;
+    box-shadow: 0 0 2px #aaa;
     border-radius: 3px;
+    transition: 0.2s;
+    padding: 15px 8px;
+    height: 40px;
 }
 .form-register input:focus {
-    border: 2px solid green;
+    box-shadow: 0 0 5px rgba(0, 166, 0, 0.509);
 }
 .form-input-username {
     margin-top: 20px;

@@ -53,18 +53,19 @@
 .box-form-canvas input:nth-child(2n) {
     box-sizing: border-box;
     width: 100%;
-    height: 30px;
-    font-size: 15px;
+    height: 40px;
+    font-size: 14px;
     color: #333;
-    padding: 5px;
+    padding: 8px 5px;
     font-weight: 200;
     outline: none;
     border-radius: 3px;
-    border: 1px solid #999;
+    box-shadow: 0 0 2px #aaa;
+    border: none;
+    transition: 0.2s;
 }
 .box-form-canvas input:focus {
-    border: 2px solid green;
-    border-radius: 3px;
+    box-shadow: 0 0 5px rgba(0, 166, 0, 0.509);
 }
 .form-create-cookies {
     display: flex;
