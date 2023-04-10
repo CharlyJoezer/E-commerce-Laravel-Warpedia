@@ -17,46 +17,37 @@
     <title>{{ $title }}</title>
 </head>
 <body>
-
     @include('template.navbar')
     <div class="container">
         @yield('content')
     </div>
     @include('template.footer')
+    
+    
+    @if (session()->has('fail'))
+    <div class="popup-message">
+        <div class="message-text">{{ session('fail') }}</div>
+    </div>
+    @endif
+
+
 
 <script>
-    window.addEventListener("scroll", (event) => {
-        scroll = this.scrollY;
-        if (scroll > 200){
-            $('#navbar').css({
-            'position' : 'fixed',
-            'top' : '0',
-            'left': '0',
-            'right': '0',
-            'z-index': '9999',
-            'background-color': 'white',
-            'height': '60px',
-            'box-shadow': '0 1px 1px #eee'
-            })
-            $('#logo-img').css({
-             'width': '120px',
-             'height': '40px'
-            });
-        }
-        if(scroll < 200){
-            $('#navbar').css({
-             'position' : '',
-             'top' : '',
-             'left': '',
-             'right': '',
-             'z-index': '',
-             'background-color': 'none',
-             'box-shadow': '0 3px 5px #eee'
-            })  
-        }
-    })
-
+    function showMessage(){
+        $('.popup-message').addClass('down')
+        setTimeout(() => {
+            $('.popup-message').removeClass('down')
+        }, 5000);
+    }
 </script>
+@if(session()->has('fail'))
+    <script>
+        $(document).ready(function(){
+            showMessage()
+        })
+    </script>
+@endif
+
 <script src="js/{{ $js }}"></script>
 </body>
 </html>

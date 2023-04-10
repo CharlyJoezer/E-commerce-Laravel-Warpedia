@@ -10,12 +10,15 @@ h1, h2, h3, h4, h5, p {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* border-bottom: 1px solid #999; */
+    position: sticky;
+    top: 0;
+    z-index: 9999;
+    background-color: white;
     padding: 5px;
     padding-left: 8px;
     padding-right: 8px;
     box-sizing: border-box;
-    box-shadow: 0 3px 5px #eee;
+    box-shadow: 0 1px 1px #ddd;
 }
 .navbar .logo-img {
      width: 120px;
@@ -92,8 +95,8 @@ h1, h2, h3, h4, h5, p {
     border-radius: 10px;
 }
 .buat-toko img {
-    width: 15px;
-    height: 15px;
+    width: 19px;
+    height: 19px;
 }
 .buat-toko p {
     padding-left: 2px;
@@ -108,7 +111,7 @@ h1, h2, h3, h4, h5, p {
     box-shadow: 0 1px 5px 1px #aaa;
     padding: 10px;
     box-sizing: 5px;
-    width: 180px;
+    width: 220px;
     z-index: 1;
     left: 50%;
     transform: translateX(-50%);
@@ -121,7 +124,7 @@ h1, h2, h3, h4, h5, p {
     font-size: 13px;
     color: #aaa;
 }
-.btn-buat-toko {
+.btn-buat-toko, .btn-dashboard-toko {
     outline: none;
     background-color: #03a10e;
     padding: 8px;
@@ -162,6 +165,7 @@ h1, h2, h3, h4, h5, p {
     padding: 10px 12px; 
     border-radius: 50%;
     transition: 0.2s;
+    position: relative;
 }
 .wrapper-pesan:hover {
     background-color: #ddd;
@@ -184,9 +188,6 @@ h1, h2, h3, h4, h5, p {
 .chat-popup-flow:hover{
     background-color: green;
 }
-
-
-
 /* NAVBAR PROFIL */
 .wrapper-navbar-profil{
     position: relative;
@@ -303,64 +304,62 @@ h1, h2, h3, h4, h5, p {
     margin-top: 500px;
 }
 .footer-top{
-height: 50px;
-background-color: rgb(0, 127, 0);
-/* background-color: #555; */
-display: flex;
-align-items: center;
-justify-content: space-between;
-padding: 0 25px;
+    height: 50px;
+    background-color: rgb(0, 127, 0);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 25px;
 }
 .footer-top p {
-font-family: sans-serif;
-font-size: 13px;
-color: white;
+    font-family: sans-serif;
+    font-size: 13px;
+    color: white;
 }
 .social-media-link {
-display: flex;
-align-items: center;
+    display: flex;
+    align-items: center;
 }
 .social-media-link img{
-width: 15px;
-height: 15px;
-margin-left: 30px;
+    width: 15px;
+    height: 15px;
+    margin-left: 30px;
 }
 .footer-middle {
-height: 200px;
-display: flex;
-padding:  30px 25px 0px 25px;
+    height: 200px;
+    display: flex;
+    padding:  30px 25px 0px 25px;
 }
 .footer-middle-name{
-width: 250px;
-margin-right: 40px;
+    width: 250px;
+    margin-right: 40px;
 }
 .footer-header-bottom-line{
-height: 5px;
-width: 100%;
-border-radius: 20px;
-background-color: rgb(0, 158, 0);
-margin-top: 10px;
+    height: 5px;
+    width: 100%;
+    border-radius: 20px;
+    background-color: rgb(0, 158, 0);
+    margin-top: 10px;
 }
 .footer-middle-name header{
-font-family: Roboto;
-font-weight: 500;
-margin-bottom: 20px;
-/* border-bottom: 2px solid #555; */
+    font-family: Roboto;
+    font-weight: 500;
+    margin-bottom: 20px;
 }
 .footer-middle-name p{
-font-family: sans-serif;
-font-size: 13px;
-white-space: 2px;
+    font-family: sans-serif;
+    font-size: 13px;
+    white-space: 2px;
 }
 .image-and-text{
-display: flex;
-align-items: center;
-margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
 }
 .image-and-text img{
-width: 13px;
-height: 13px;
-margin-right: 5px;
+    width: 13px;
+    height: 13px;
+    margin-right: 5px;
 }
 .footer-middle-section2 p , .footer-middle-section3 p{
 margin-bottom: 15px;
@@ -375,8 +374,70 @@ justify-content: center;
 font-family: sans-serif;
 font-size: 12px;
 color: #555;
-/* background-color: #174216; */
 }
 .navbar-dropdown-image-profil{
     border-radius: 50%;
+}
+.dropdown-box-profil-toko{
+    border: 1px solid #eee;
+    border-radius: 5px;
+    padding: 8px 5px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+}
+.dropdown-box-profil-toko img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+.dropdown-toko-name{
+    padding-left: 5px;
+}
+.dropdown-toko-name-text{  
+    font-family: sans-serif;
+    font-weight: 500;
+    color: #555;
+    text-align: start;
+}
+.dropdown-toko-text{
+    font-family: sans-serif;
+    font-size: 12px;
+    text-align: start;
+    color: #777;
+}
+.notification-message{
+    width: 15px;
+    height: 15px;
+    background-color: red;
+    border-radius: 50%;
+    position: absolute;
+    right: 15%;
+    top: 15%;
+    font-size: 10px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.popup-message{
+    position: fixed;
+    top: -5%;
+    right: 0;
+    left: 0;
+    z-index: 9999;
+    background-color: red;
+    color: white;
+    border-radius: 5px;
+    width: fit-content;
+    margin: 0 auto;
+    padding: 5px 15px;
+    font-family: sans-serif;
+    font-size: 13px;
+    transition: 0.5s;
+}
+.popup-message.down{
+    top: 5%;
 }
