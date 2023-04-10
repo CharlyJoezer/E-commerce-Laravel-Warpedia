@@ -16,14 +16,8 @@
     <title>{{ $title }}</title>
     @if (auth()->user()->toko->status == 'false')
         <style>
-            /* body {
-                background-image: url('/asset/buat_toko.svg');
-                background-position: center;
-                background-repeat: no-repeat;
-            } */
             .verifikasi-box {
                 position: absolute;
-                /* border: 1px solid #555; */
                 box-shadow: 0 0 3px #aaa;
                 border-radius: 5px;
                 padding: 5px;
@@ -37,13 +31,13 @@
                 font-size:14px;
                 background-color: white; 
             }
-            .verifikasi-number {
-                margin-top: 20px; 
-                /* border: 1px solid #555; */
+            .verifikasi-email {
+                margin-top: 20px;
                 box-sizing: 5px;
                 padding: 5px;
                 display: flex;
-                justify-content: space-around
+                justify-content: space-evenly;
+                align-items:center; 
             } 
             .icon-handphone{
                 width: 50px;
@@ -119,11 +113,11 @@
         <div class="verifikasi-content" id="verifikasi-content">
             <div class="verifikasi-box" id="verifikasi-box">
                 <p id="header-text-verifikasi-content" style="color:black;text-align:center;">Toko kamu belum Terverifikasi!</p>
-                <div class="verifikasi-number" id="verifikasi-number">
+                <div class="verifikasi-email" id="verifikasi-email">
                     <img class="icon-handphone" src="/asset/icon-handphone.png" alt="">
                     <div>
-                        <p style="color: #999;">Verifikasi dengan No.HP Kamu</p>
-                        <p>+62 {{ auth()->user()->telepon }}</p>
+                        <p style="color: #999;">Verifikasi dengan Email Kamu</p>
+                        <p>{{ auth()->user()->email }}</p>
                     </div>
                 </div>
                 <div class="box-kirim-kode-otp">
@@ -134,12 +128,12 @@
         <script>
             function sendCode(){
                 $.ajax({
-                    'url': window.location.origin + '/verifikasi/otp',
+                    'url': '/verifikasi/otp',
                     'type': 'POST',
                     'dataType': 'JSON',
                     'data' : {
                         "_token": "{{ csrf_token() }}",
-                        'telepon': {{ auth()->user()->telepon }},
+                        'email': '{{ auth()->user()->email }}',
                         'id': {{ auth()->user()->id }}
                     },
                     success:function(data){
@@ -164,29 +158,28 @@
                 })
             }
             $('#kirim-kode-otp').click(function(){
-                $.ajax({
-                    'url': window.location.origin + '/verifikasi/otp',
-                    'type': 'POST',
-                    'dataType': 'JSON',
-                    'data' : {
-                        "_token": "{{ csrf_token() }}",
-                        'telepon': {{ auth()->user()->telepon }},
-                        'id': {{ auth()->user()->id }}
-                    },
-                    success:function(data){
-                        // $('#verifikasi-content').html('')
-                        $('#verifikasi-box').html(`
+                $('#verifikasi-box').html(`
                         <div class="box-form-otp">
                             <h2 style="font-style: Roboto;font-size: 15px;text-align:center;">Masukkan Kode OTP</h2>
                             <br>
                             <div class="form-otp">
-                                <input class="input-kode-otp" id="input-kode-otp" style="display: block;" name="otp" type="number" maxlength="6">
+                                <input class="input-kode-otp" required id="input-kode-otp" style="display: block;" name="otp" type="number" min="0" max="6">
                                 <p id="error-messages"></p>
                                 <button class="button-verify" id=button-verify style="display: block;" >Verify</button>
                             </div>
                             <p id="text-bottom-form" style="text-align:center; font-size: 12px;color: #aaa;margin-top:5px;">Tidak menerima kode ?<button style="border:none;background-color:white;font-size: 12px;color: blue;cursor:pointer;" id="kirim-kode-otp" onclick="sendCode()">Kirim ulang</button></p>
                         </div>
-                        `)
+                `)
+                $.ajax({
+                    'url': '/verifikasi/otp',
+                    'type': 'POST',
+                    'dataType': 'JSON',
+                    'data' : {
+                        "_token": "{{ csrf_token() }}",
+                        'email': '{{ auth()->user()->email }}',
+                        'id': {{ auth()->user()->id }}
+                    },
+                    success:function(data){
                         scriptCheckOTP();
                     }
                 })
@@ -200,7 +193,7 @@
                         $.ajax({
                             'url': window.location.origin + '/check/otp',
                             'type': 'POST',
-                            'dataType': 'text',
+                            'dataType': 'json',
                             'data' : {
                                 "_token": "{{ csrf_token() }}",
                                 'otp' : $(this).val() 
@@ -214,16 +207,15 @@
                                         'margin-top': '5px'
                                     })
                                 }
-                                if(data == 'false'){
-                                    $('#error-messages').html('Kode OTP tidak ditemukan!')
+                                if(data.status == 'false'){
+                                    $('#error-messages').html(data.message)
                                     $('#error-messages').css({
                                         'color': 'red',
                                         'font-size': '12px',
                                         'margin-top': '5px'
                                     })
                                 }
-                                if(data == 'success'){
-                                    console.log('okee')
+                                if(data.status == 'true'){
                                     location.reload()
                                 }
                             }
@@ -233,9 +225,9 @@
 
                 $('#button-verify').click(function(){
                     $.ajax({
-                        'url': window.location.origin + '/check/otp',
+                        'url': '/check/otp',
                         'type': 'POST',
-                        'dataType': 'text',
+                        'dataType': 'JSON',
                         'data' : {
                             "_token": "{{ csrf_token() }}",
                             'otp' : $('#input-kode-otp').val() 
@@ -249,11 +241,15 @@
                                     'margin-top': '5px'
                                 })
                             }
-                            if(data == 'fail'){
-                                console.log('salah')
+                            if(data.status == 'false'){
+                                $('#error-messages').html(data.message)
+                                    $('#error-messages').css({
+                                        'color': 'red',
+                                        'font-size': '12px',
+                                        'margin-top': '5px'
+                                })
                             }
-                            if(data == 'success'){
-                                console.log('okee')
+                            if(data.status == 'true'){
                                 location.reload()
                             }
                         }
@@ -262,13 +258,40 @@
             }
         </script>
     @else
-        @include('dashboard.templates.navbar')
-        @include('dashboard.templates.sidebar')
-
-        <div class="dashboard-content" id="dashboard-content">
-            @yield('content')
+        @if (auth()->user()->toko->city == null)
+        <div class="layer-bg-pilih-kota">
+            <div class="box-pilih-kota">
+                <div class="logo-warpedia"><img src="/asset/warpedia_text2.png" alt=""></div>
+                <div class="pilih-kota-text">Kami belum mengetahui Lokasi Kota Kamu</div>
+                <hr>
+                <div class="input-kota">
+                    <form action="/toko/insert-kota" method="POST">
+                        @csrf
+                        <div class="header-input-kota">Pilih Kota</div>
+                        <select name="citys" id="">
+                            @foreach ($citys as $city)
+                                <option value="{{ $city->city_id }}">{{ $city->city_name }}</option>
+                            @endforeach
+                        </select>
+                        @error('citys')
+                            <div style="color:red;font-size:13px;font-family:sans-serif;">{{ $message }}</div>
+                        @enderror
+                        <div class="simpan-input-kota">
+                            <button>Simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-        <script src="/js/dashboard.js"></script>
+        @else
+            @include('dashboard.templates.navbar')
+            @include('dashboard.templates.sidebar')
+
+            <div class="dashboard-content" id="dashboard-content">
+                @yield('content')
+            </div>
+            <script src="/js/dashboard.js"></script>
+        @endif
     @endif
 
 

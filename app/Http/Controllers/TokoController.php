@@ -4,71 +4,144 @@ namespace App\Http\Controllers;
 
 use Exception;
 use App\Models\Otp;
+use App\Models\City;
 use App\Models\Toko;
 use App\Models\User;
+use App\Models\Pesanan;
 use App\Models\Product;
-use App\Models\Kategori;
 use Twilio\Rest\Client;
+use App\Models\Kategori;
 use Illuminate\Http\Request;
 use App\Http\SendEmail\SendEmail;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class TokoController extends Controller
 {
     public function dataPembuatanToko(Request $request)
     {
-        if (auth()->user()->telepon == 'null') {
-            if (
-                $request->telpon_number === null || !is_numeric($request->telpon_number) ||
-                $request->nama_toko === null || preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $request->nama_toko)
-            ) {
-                return back();
-            }
-            $dataToko = [
-                'nama_toko' => strtolower($request->nama_toko),
-                'user_id' => auth()->user()->id,
-                'telepon' => $request->telpon_number,
-                'status' => 2
-            ];
-            if (!is_null(auth()->user()->email)) {
-                $dataToko['email'] = auth()->user()->email;
-            }
-            if (count(Toko::where('user_id', auth()->user()->id)->get()) > 0) {
-                return back();
-            }
-            User::where('id', auth()->user()->id)->update(['telepon' => $request->telpon_number]);
-            Toko::create($dataToko);
+        try{
+            if (auth()->user()->email == null) {
+                if ($request->email === null || is_numeric($request->email) ||
+                    $request->nama_toko === null || !preg_match('/^[a-zA-Z0-9`]+$/', $request->nama_toko)
+                ) {
+                    return back()->with('fail', 'Harap menuliskan email yang benar!');
+                }
 
-            return redirect('/toko/dashboard');
-        } elseif (auth()->user()->telepon !== 'null') {
+                (bool) $checkAlreadyNamaToko = count(Toko::where('nama_toko', $request->nama_toko)->get()) > 0;
+                if($checkAlreadyNamaToko){
+                    return back()->with('fail', 'Nama toko sudah dipakai!');
+                } 
 
-            if ($request->nama_toko === null || preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $request->nama_toko)) {
-                return back();
-            }
+                $dataToko = [
+                    'nama_toko' => strtolower($request->nama_toko),
+                    'user_id' => auth()->user()->id,
+                    'email' => $request->email,
+                    'status' => 2
+                ];
+                if (!is_null(auth()->user()->telepon)) {
+                    $dataToko['telepon'] = auth()->user()->telepon;
+                }
+                if (count(Toko::where('user_id', auth()->user()->id)->get()) > 0) {
+                    return back()->with('fail','Anda hanya bisa memiliki 1 Toko');
+                }
+                DB::beginTransaction();
+                try{
+                    User::where('id', auth()->user()->id)->update(['email' => $request->email]);
+                    Toko::create($dataToko);
 
-            $dataToko = [
-                'nama_toko' => strtolower($request->nama_toko),
-                'user_id' => auth()->user()->id,
-                'telepon' => auth()->user()->telepon,
-                'status' => 2
-            ];
-            if (!is_null(auth()->user()->email)) {
-                $dataToko['email'] = auth()->user()->email;
-            }
-            if (count(Toko::where('user_id', auth()->user()->id)->get()) > 0) {
-                return back();
-            }
+                    DB::commit();
+                }catch(Exception){
+                    DB::rollback();
+                    return back()->with('fail', 'Server Error');
+                }
+    
+                return redirect('/toko/dashboard/beranda');
+            } elseif (auth()->user()->email !== null) {
+                if ($request->nama_toko === null || 
+                !preg_match('/^[a-zA-Z0-9`]+$/', $request->nama_toko)) {
+                    return back()->with('fail', 'Nama toko hanya bisa mengandung huruf dan angka');
+                }
 
-            Toko::create($dataToko);
-            return redirect('/toko/dashboard');
+
+                (bool) $checkAlreadyNamaToko = count(Toko::where('nama_toko', $request->nama_toko)->get()) > 0;
+                if($checkAlreadyNamaToko){
+                    return back()->with('fail', 'Nama toko sudah dipakai!');
+                } 
+
+
+
+                $dataToko = [
+                    'nama_toko' => strtolower($request->nama_toko),
+                    'user_id' => auth()->user()->id,
+                    'telepon' => '-',
+                    'status' => 2
+                ];
+                if (isset(auth()->user()->email)) {
+                    $dataToko['email'] = auth()->user()->email;
+                }
+                if (count(Toko::where('user_id', auth()->user()->id)->get()) > 0) {
+                    return back()->with('fail','Anda hanya bisa memiliki 1 Toko');
+                }
+                try{
+                    Toko::create($dataToko);
+                }catch(Exception){
+                    return back()->with('fail', 'Gagal membuat Toko!');
+                }
+                return redirect('/toko/dashboard/beranda')->with('success', 'Selamat Toko kamu berhasil dibuat!');
+            }
+    
+            return back()->with('fail', 'Terjadi Kesalahan');
+            
+        }catch(Exception){
+            return abort(500, ['status' => 500, 'message' => 'Server not respond!']);
         }
-
-        return back();
     }
 
     public function dashboardTokoView()
     {
+        $city = City::all();
+        $getPesananUser = Pesanan::where('toko_id', auth()->user()->toko->id)->withonly([])->get();
+        $getCountPerluDikemas = 0;
+        $getCountSiapDikirim = 0;
+        $getCountSedangDikirim = 0;
+        $getCountSuccess = 0;
+        for ($a = 0; $a < count($getPesananUser); $a++) {
+            if ($getPesananUser[$a]['transaction_status'] == 'settlement') {
+                $getCountPerluDikemas++;
+            }
+            if ($getPesananUser[$a]['transaction_status'] == 'readyship') {
+                $getCountSiapDikirim++;
+            }
+            if ($getPesananUser[$a]['transaction_status'] == 'onroad') {
+                $getCountSedangDikirim++;
+            }
+            if ($getPesananUser[$a]['transaction_status'] == 'success') {
+                $getCountSuccess++;
+            }
+        }
         return view('dashboard.index', [
-            'title' => 'Dashboard Toko | Warpedia'
+            'title' => 'Dashboard Toko | Warpedia',
+            'citys' => $city,
+            'pesanan' => $getPesananUser,
+            'perludikemas' => $getCountPerluDikemas,
+            'siapdikirim' => $getCountSiapDikirim,
+            'sedangdikirim' => $getCountSedangDikirim,
+            'ordersuccess' => $getCountSuccess
+        ]);
+    }
+
+    public function dashboardProfilToko()
+    {
+        return view('dashboard.profil_toko', [
+            'title' => 'Profil Toko | Warpedia Dashboard'
+        ]);
+    }
+
+    public function dashboardRiwayatPesanan()
+    {
+        return view('dashboard.riwayat_pesanan', [
+            'title' => 'Riwayat Pesanan | Warpedia Dashboard'
         ]);
     }
 
@@ -80,6 +153,22 @@ class TokoController extends Controller
             'kategori' => $kategori
         ]);
     }
+
+    public function dashboardDetailProduk()
+    {
+        return view('dashboard.detail-produk', [
+            'title' => 'Detail Produk | Warpedia'
+        ]);
+    }
+
+    public function dashboardUlasanPembeli()
+    {
+        return view('dashboard.ulasan-pembeli', [
+            'title' => 'Ulasan Pembeli | Warpedia'
+        ]);
+    }
+
+
 
     public function sendVerification(Request $request)
     {
@@ -120,11 +209,11 @@ class TokoController extends Controller
             return response()->json([
                 'message' => 'Kode Otp tidak ditemukan',
                 'status' => 'false'
-            ], 404);
+            ], 200);
         } else {
             Otp::where('user_id', auth()->user()->id)->delete();
             Toko::where('user_id', auth()->user()->id)->update(['status' => 1]);
-            return response()->json(['message' => 'success verifikasi Toko'], 200);
+            return response()->json(['message' => 'success verifikasi Toko', 'status' => 'true'], 200);
         }
     }
 
@@ -138,7 +227,9 @@ class TokoController extends Controller
                 'harga_produk' => 'required|numeric',
                 'stok_produk' => 'required|numeric',
                 'minimal_pesanan' => 'required|numeric',
+                'berat_produk' => 'required|numeric'
             ]);
+
             $md5Name = md5_file($request->file('gambar_produk')->getRealPath());
             $guessExtension = $request->file('gambar_produk')->guessExtension();
 
@@ -154,16 +245,31 @@ class TokoController extends Controller
                     'harga_produk' => number_format($validatedData['harga_produk'], 0, ",", "."),
                     'stok_produk' => $validatedData['stok_produk'],
                     'minimal_pesan' => $validatedData['minimal_pesanan'],
-                    'gambar_produk' => $namaFile
+                    'gambar_produk' => $namaFile,
+                    'berat' => $validatedData['berat_produk']
                 ];
+                $finaldata['nama_produk'] = str_replace('/',' ',$finaldata['nama_produk']);
                 Product::create($finaldata);
 
-                return redirect('/toko/dashboard');
+                return redirect('/toko/dashboard/beranda');
             } else {
                 return back()->with('gambar-produk', 'Mohon format gambar bertipe PNG atau JPG!');
             }
         } catch (Exception $e) {
             return back()->with('message', 'Server Not Responding');
+        }
+    }
+
+    public function insertKotaToko(Request $request)
+    {
+        if (Auth::check()) {
+            $request->validate([
+                'citys' => 'required|string|numeric'
+            ]);
+            Toko::where('user_id', auth()->user()->id)->update(['city' => $request->citys]);
+            return redirect('/toko/dashboard/beranda');
+        } else {
+            abort(403);
         }
     }
 }

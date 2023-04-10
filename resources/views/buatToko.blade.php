@@ -16,16 +16,16 @@
             <div class="step1-form">
                 <div class="header-step1-form counter-and-header">
                     <span class="number-header" id="number-header1">1</span>
-                    <p>Masukan No.HP-mu</p>
+                    <p>Masukan Email Kamu</p>
                 </div>
                 <div class="content-step1-form input-step">
                     <div class="line-step"></div>
                     <div class="input-box">
-                        @if (auth()->user()->telepon == 'null')
-                        <input type="text" id="telpon-number" name="telpon_number" placeholder="+628*********" >
-                        <p>Masukkan No.telp aktif untuk menerima Verifikasi!</p>
+                        @if (auth()->user()->email == null)
+                        <input type="email" id="email" name="email" placeholder="Warpedia@example.com" >
+                        <p>Masukkan Email aktif untuk menerima Verifikasi!</p>
                         @else
-                            <h4 style="font-family: Roboto;" id="number-telp">+62 {{ auth()->user()->telepon }}</h4>
+                            <h4 style="font-family: Roboto;" id="number-telp">{{ auth()->user()->email }}</h4>
                         @endif
                     </div>
                 </div>
@@ -114,8 +114,8 @@
             }
             })
     })
-    $('#telpon-number').change(function(){
-        if(!isNaN($(this).val()) && $(this).val().length > 10){
+    $('#email').change(function(){
+        if($(this).val().length > 4){
             $('#number-header1').css({
                 'background-color':'rgb(0, 196, 0)',
                 'color':'white'
