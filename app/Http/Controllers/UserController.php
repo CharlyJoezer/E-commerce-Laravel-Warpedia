@@ -133,22 +133,6 @@ class UserController extends Controller
         ]);
     }
 
-    public function checkNamaToko(Request $request)
-    {
-        $namatoko = strtolower(strval($request->name));
-        // CHECK THE WORD
-        if (strlen($request->name) <= 0 || preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $request->name)) {
-            return false;
-        }
-
-        $getData = Toko::where('nama_toko', $namatoko)->get();
-        if (count($getData) === 0) {
-            return ['success' => 'Nama ini tersedia!'];
-        } else {
-            return ['fail' => 'Maaf nama ini sudah terpakai'];
-        }
-    }
-
     public function viewProfilUser()
     {
         if (Auth::check()) {

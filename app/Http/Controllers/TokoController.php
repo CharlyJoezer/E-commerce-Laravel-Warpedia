@@ -272,4 +272,24 @@ class TokoController extends Controller
             abort(403);
         }
     }
+
+    public function checkNamaToko(Request $request)
+    {   
+        try{
+            $namatoko = strtolower(strval($request->name));
+            // CHECK THE WORD
+            if (strlen($request->name) <= 0 || !preg_match('/^[a-zA-Z0-9`]+$/', $request->name)) {
+                return ['fail' => '*hanya boleh mengandung huruf atau angka'];
+            }
+
+            $getData = Toko::where('nama_toko', $namatoko)->get();
+            if (count($getData) === 0) {
+                return ['success' => 'Nama ini tersedia!'];
+            } else {
+                return ['fail' => 'Maaf nama ini sudah terpakai'];
+            }   
+        }catch(Exception){
+            return ['fail', 'Server not responding!'];
+        }
+    }
 }
