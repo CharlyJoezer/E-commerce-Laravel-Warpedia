@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('stok_produk');
             $table->string('minimal_pesan');
             $table->string('gambar_produk');
+            $table->string('berat_produk');
             $table->timestamps();
         });
     }

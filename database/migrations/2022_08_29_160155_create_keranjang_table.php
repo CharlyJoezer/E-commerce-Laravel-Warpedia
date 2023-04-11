@@ -18,9 +18,8 @@ return new class extends Migration
             $table->foreignId('user_id');
             $table->foreignId('toko_id');
             $table->foreignId('product_id');
-            $table->string('nama_produk');
-            $table->string('harga');
             $table->string('jumlah_order');
+            $table->string('harga');
             $table->timestamps();
         });
     }
