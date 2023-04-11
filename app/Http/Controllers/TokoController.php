@@ -211,9 +211,16 @@ class TokoController extends Controller
                 'status' => 'false'
             ], 200);
         } else {
-            Otp::where('user_id', auth()->user()->id)->delete();
-            Toko::where('user_id', auth()->user()->id)->update(['status' => 1]);
-            return response()->json(['message' => 'success verifikasi Toko', 'status' => 'true'], 200);
+            DB::beginTransaction();
+            try{
+                Otp::where('user_id', auth()->user()->id)->delete();
+                Toko::where('user_id', auth()->user()->id)->update(['status' => 1]);
+                DB::commit();
+                return response()->json(['message' => 'success verifikasi Toko', 'status' => 'true'], 200);
+            }catch(Exception){
+                DB::rollback();
+                return response()->json(['message' => 'Terjadi kesalahan, coba lagi!', 'status' => 'false'], 200);
+            }
         }
     }
 
@@ -229,7 +236,7 @@ class TokoController extends Controller
                 'minimal_pesanan' => 'required|numeric',
                 'berat_produk' => 'required|numeric'
             ]);
-
+            
             $md5Name = md5_file($request->file('gambar_produk')->getRealPath());
             $guessExtension = $request->file('gambar_produk')->guessExtension();
 
@@ -239,15 +246,16 @@ class TokoController extends Controller
                 $finaldata = [
                     'nama_produk' => $validatedData['nama_produk'],
                     'user_id'    => auth()->user()->id,
-                    'kategori_id'    => (int)$validatedData['kategori'],
                     'toko_id'    => auth()->user()->toko->id,
+                    'kategori_id'    => (int)$validatedData['kategori'],
                     'deskripsi_produk' => $validatedData['deskripsi_produk'],
                     'harga_produk' => number_format($validatedData['harga_produk'], 0, ",", "."),
                     'stok_produk' => $validatedData['stok_produk'],
                     'minimal_pesan' => $validatedData['minimal_pesanan'],
                     'gambar_produk' => $namaFile,
-                    'berat' => $validatedData['berat_produk']
+                    'berat_produk' => $validatedData['berat_produk']
                 ];
+                
                 $finaldata['nama_produk'] = str_replace('/',' ',$finaldata['nama_produk']);
                 Product::create($finaldata);
 
